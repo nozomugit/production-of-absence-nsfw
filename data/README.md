@@ -1,15 +1,20 @@
 # Data
 
-This directory contains the manual annotation data accompanying the paper.
+This directory contains data accompanying the paper.
 
 ## Files
 
 ### `manual_annotations.csv`
 
-Per-image manual observation labels for the ~316 NSFW-flagged hand sketch
-images analyzed in §3.3 and §4.1 of the paper.
+Annotation schema with a small set of example rows illustrating how per-image
+manual observation labels were structured (columns: `image_id`, `category`,
+`notes`).
 
->Note: This file documents the annotation schema with a small set of example rows, illustrating how per-image labels would be structured. The aggregate distribution used in the paper (and in Figure 1) is provided in category_counts.csv. Per-image labels for the full ~316-image subset are retained by the author and may be released in future work pending appropriate ethical review (see paper §8).
+The full per-image labels for the ~316-image subset analyzed in §3.3 and §4.1
+of the paper are not included in this repository. They are retained by the
+author and may be released in future work pending appropriate ethical review
+(see paper §8). The aggregate distribution used in the paper and in Figure 1
+is provided in `category_counts.csv` below.
 
 **Schema:**
 
@@ -19,16 +24,18 @@ images analyzed in §3.3 and §4.1 of the paper.
 | `category` | string | One of: `Sexual`, `Violent`, `Polydactyly`, `Five-fingered`, `Oligodactyly`, `Atypical Arrangement`, `Misclassified`, `Other` |
 | `notes` | string (optional) | Free-text observations |
 
-**Annotation methodology** (§3.3): "exploratory and conducted by a single
-annotator; it does not include inter-rater reliability or formal annotation
-protocol. Within the present study, manual observation is positioned as
-preliminary description for qualitatively grasping the filter's behavioral
-tendencies."
+**Annotation methodology** (paper §3.3): the observation is exploratory and
+conducted by a single annotator; it does not include inter-rater reliability
+or formal annotation protocol. Within the present study, manual observation
+is positioned as preliminary description for qualitatively grasping the
+filter's behavioral tendencies.
 
 ### `category_counts.csv`
 
-Aggregate counts and percentages of the manual annotation categories,
-corresponding to the data shown in Figure 1.
+Aggregate counts and percentages from the author's manual observation of the
+~316-image subset. This file corresponds to Figure 1 in the paper and allows
+direct reproduction of the category distribution without redistributing the
+generated images or the full per-image annotation table.
 
 **Schema:**
 
@@ -38,10 +45,8 @@ corresponding to the data shown in Figure 1.
 | `count` | integer | Number of images in the category |
 | `percentage` | float | Percentage of total |
 
-These aggregate counts are derived from `manual_annotations.csv`. Both files
-are provided for convenience: the per-image labels enable detailed analysis,
-while the aggregate counts allow direct reproduction of Figure 1 without
-processing the full label file.
+`src/figures.py` reads this file by default to regenerate Figure 1; it also
+accepts a per-image `manual_annotations.csv` if such a file is present.
 
 ## License
 
