@@ -1,0 +1,51 @@
+# Output directories
+output/
+figures/
+*.png
+*.jpg
+*.jpeg
+
+# Allow figures in specific directories if needed
+!data/*.csv
+!figures/.gitkeep
+
+# Generated data files (large)
+*.npz
+*.npy
+*.pkl
+*.pickle
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hugging Face cache
+.cache/
+~/.cache/huggingface/
+
+# Logs
+*.log
