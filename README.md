@@ -21,7 +21,7 @@ The empirical findings are summarized as follows:
 - Over 42,000 generation trials with the prompt `"hand sketch, pencil drawing"` produced approximately 10,000 NSFW-flagged images.
 - The NSFW classification rate converged to approximately 23.7%.
 - Manual observation of approximately 316 NSFW-flagged images found that less than 0.3% contained sexual or violent content; the overwhelming majority depicted hands with anatomical variation.
-- Approximately one in four images depicting standard five-fingered hands also received an NSFW classification, indicating a structural bias against hand sketches as such.
+- Approximately one in four images depicting standard five-fingered hands also received an NSFW classification, indicating that, under this prompt condition, the filter responds not to finger count alone but to a broader configuration of visual features associated with hand drawings.
 
 ## Repository Structure
 
@@ -54,10 +54,12 @@ The methodology corresponds to §3 of the paper:
 
 ### §3.1 NSFW Filter Architecture
 
-Stable Diffusion (`runwayml/stable-diffusion-v1-5`) implements a two-stage CLIP-based NSFW classifier:
+Stable Diffusion's pipeline (`runwayml/stable-diffusion-v1-5`) integrates a CLIP-based NSFW classifier that this study observes from two positions:
 
-1. **First stage** (pipeline-internal `safety_checker`): classifies images immediately after generation; if `has_nsfw_concepts=True`, the image is replaced with a black image. **This stage is bypassed in our methodology.**
-2. **Second stage** (standalone `StableDiffusionSafetyChecker`): performs independent NSFW judgment, used here to flag generated images while preserving them for analysis.
+1. **Pipeline-internal position** (`safety_checker`): ordinarily classifies images immediately after generation; if `has_nsfw_concepts=True`, the image is replaced with a black image before the user can see it. **This stage is bypassed in our methodology.**
+2. **Post-generation position** (standalone `StableDiffusionSafetyChecker`): the same filtering logic, applied externally to images preserved through the bypass, used here to flag generated images for analysis.
+
+The bypass was used not to distribute or amplify restricted content but to examine the categories of images made inaccessible by the filter. The critical point is not that erasure happens twice; it is that ordinary users are structurally confined to the first position, while this study makes the second position observable.
 
 ### §3.2 Generation Parameters
 
