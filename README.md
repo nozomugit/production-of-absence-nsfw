@@ -90,7 +90,7 @@ However, all generation parameters are fully documented, allowing reproduction o
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<username>/production-of-absence-nsfw.git
+git clone https://github.com/nozomugit/production-of-absence-nsfw.git
 cd production-of-absence-nsfw
 
 # 2. Install dependencies (Python 3.10+ recommended, CUDA-capable GPU required)
