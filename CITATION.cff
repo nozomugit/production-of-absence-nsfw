@@ -10,13 +10,12 @@ type: software
 license: MIT
 repository-code: "https://github.com/nozomugit/production-of-absence-nsfw"
 preferred-citation:
-  type: conference-paper
+  type: unpublished
   authors:
     - family-names: "Kubota"
       given-names: "Nozomu"
       email: "nozomu.k@cnxt.jp"
       affiliation: "Creator's NEXT"
   title: "Production of Absence: Reading Stable Diffusion's NSFW Filter through Code and Typology"
-  conference:
-    name: "Expanded Conference 2026"
   year: 2026
+  notes: "Manuscript submitted to Expanded Conference 2026"
