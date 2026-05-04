@@ -40,12 +40,10 @@ production-of-absence-nsfw/
 │   ├── extract_clip.py         # CLIP embedding extraction (§5.3)
 │   ├── compose_grid.py         # Typological grid composition (§6.1, Figure 8)
 │   └── figures.py              # Regenerate paper figures (Figures 1–7)
-├── data/
-│   ├── README.md
-│   ├── manual_annotations.csv  # Per-image labels (template)
-│   └── category_counts.csv     # Aggregate counts (Figure 1 source data)
-└── notebooks/
-    └── (regeneration notebooks)
+└── data/
+    ├── README.md
+    ├── manual_annotations.csv  # Annotation schema with example rows
+    └── category_counts.csv     # Aggregate counts used for Figure 1
 ```
 
 ## Methodology
@@ -143,11 +141,11 @@ Generated images are subject to the [CreativeML OpenRAIL-M](https://huggingface.
 If you use this code, the annotation schema, or the aggregate manual-observation counts in your research, please cite:
 
 ```bibtex
-@inproceedings{kubota2026production,
-  author    = {Kubota, Nozomu},
-  title     = {Production of Absence: Reading Stable Diffusion's {NSFW} Filter through Code and Typology},
-  booktitle = {Proceedings of the Expanded Conference 2026},
-  year      = {2026}
+@unpublished{kubota2026production,
+  author = {Kubota, Nozomu},
+  title  = {Production of Absence: Reading Stable Diffusion's {NSFW} Filter through Code and Typology},
+  year   = {2026},
+  note   = {Manuscript submitted to Expanded Conference 2026}
 }
 ```
 
