@@ -42,8 +42,10 @@ production-of-absence-nsfw/
 │   └── figures.py              # Regenerate paper figures (Figures 1–7)
 ├── data/
 │   ├── README.md
-│   ├── manual_annotations.csv  # Annotation schema with example rows
-│   └── category_counts.csv     # Aggregate counts used for Figure 1
+│   ├── manual_annotations.csv  # Per-image labels (template)
+│   └── category_counts.csv     # Aggregate counts (Figure 1 source data)
+└── notebooks/
+    └── (regeneration notebooks)
 ```
 
 ## Methodology
@@ -101,14 +103,19 @@ pip install -r requirements.txt
 #    A reduced count (e.g., NUM_TRIALS=1000) is recommended for initial testing.
 python -m src.generate --num_trials 42000 --output_dir output
 
-# 4. Extract CLIP embeddings for collected images
-python -m src.extract_clip --input_dir output/nsfw_images --output output/embeddings.npz
+# 4. Extract CLIP embeddings for both NSFW-flagged and SAFE-sampled images
+python -m src.extract_clip --input_dir output/nsfw_images \
+                            --output output/embeddings_nsfw.npz
 
-# 5. Regenerate paper figures (Figures 1, 5, 6, 7)
+python -m src.extract_clip --input_dir output/safe_sample \
+                            --output output/embeddings_safe.npz
+
+# 5. Regenerate paper figures (Figures 1, 2-4, 5, 6, 7)
 python -m src.figures --records output/generation_records.json \
-                       --embeddings output/embeddings.npz \
-                       --annotations data/manual_annotations.csv \
-                       --output_dir figures
+                      --embeddings_nsfw output/embeddings_nsfw.npz \
+                      --embeddings_safe output/embeddings_safe.npz \
+                      --annotations data/category_counts.csv \
+                      --output_dir figures
 
 # 6. Compose typological grid (Figure 8)
 python -m src.compose_grid --input_dir output/nsfw_images \
@@ -127,20 +134,20 @@ python -m src.compose_grid --input_dir output/nsfw_images \
 This repository uses two licenses:
 
 - **Source code** (everything in `src/` and notebooks): [MIT License](LICENSE)
-- **Manual annotations** (`data/manual_annotations.csv` and `data/category_counts.csv`): [CC-BY 4.0](LICENSE-DATA)
+- **Annotation schema and aggregate manual-observation counts** (`data/manual_annotations.csv` and `data/category_counts.csv`): [CC-BY 4.0](LICENSE-DATA)
 
 Generated images are subject to the [CreativeML OpenRAIL-M](https://huggingface.co/spaces/CompVis/stable-diffusion-license) license inherited from the underlying Stable Diffusion model.
 
 ## Citation
 
-If you use this code or the manual annotations in your research, please cite:
+If you use this code, the annotation schema, or the aggregate manual-observation counts in your research, please cite:
 
 ```bibtex
-@unpublished{kubota2026production,
-  author = {Kubota, Nozomu},
-  title  = {Production of Absence: Reading Stable Diffusion's {NSFW} Filter through Code and Typology},
-  year   = {2026},
-  note   = {Manuscript submitted to Expanded Conference 2026}
+@inproceedings{kubota2026production,
+  author    = {Kubota, Nozomu},
+  title     = {Production of Absence: Reading Stable Diffusion's {NSFW} Filter through Code and Typology},
+  booktitle = {Proceedings of the Expanded Conference 2026},
+  year      = {2026}
 }
 ```
 
