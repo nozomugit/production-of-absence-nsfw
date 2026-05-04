@@ -20,7 +20,7 @@ Usage
         --records output/generation_records.json \\
         --embeddings_nsfw output/embeddings_nsfw.npz \\
         --embeddings_safe output/embeddings_safe.npz \\
-        --annotations data/manual_annotations.csv \\
+        --annotations data/category_counts.csv \\
         --output_dir figures
 
 Reference: Kubota (2026), §4.1-4.5.
@@ -66,11 +66,30 @@ CATEGORY_ORDER = [
 ]
 
 
-def figure1_category_distribution(annotations_path: Path, output_path: Path):
-    """Figure 1: Manual annotation category distribution."""
-    df = pd.read_csv(annotations_path)
+def figure1_category_distribution(input_path: Path, output_path: Path):
+    """Figure 1: Manual annotation category distribution.
 
-    counts = df["category"].value_counts().reindex(CATEGORY_ORDER, fill_value=0)
+    Accepts either format:
+    - Aggregate counts (category_counts.csv): columns = category, count, percentage
+    - Per-image labels (manual_annotations.csv): columns = image_id, category, notes
+
+    The aggregate format is what is published in this repository (see paper §3.4
+    and data/README.md). The per-image format is supported for completeness and
+    for any future extension where per-image labels are released.
+    """
+    df = pd.read_csv(input_path)
+
+    if "count" in df.columns:
+        # Aggregate format (category_counts.csv) — direct counts per category
+        counts = (
+            df.set_index("category")["count"]
+            .reindex(CATEGORY_ORDER, fill_value=0)
+        )
+        n = int(counts.sum())
+    else:
+        # Per-image format (manual_annotations.csv) — count occurrences
+        counts = df["category"].value_counts().reindex(CATEGORY_ORDER, fill_value=0)
+        n = len(df)
 
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.bar(range(len(counts)), counts.values, color=COLOR_BAR,
@@ -79,7 +98,7 @@ def figure1_category_distribution(annotations_path: Path, output_path: Path):
     ax.set_xticklabels(counts.index, rotation=30, ha="right")
     ax.set_ylabel("Number of Images")
     ax.set_xlabel("Category")
-    ax.set_title(f"Category Distribution (Manual Annotation, n={len(df)})")
+    ax.set_title(f"Category Distribution (Manual Annotation, n={n})")
     ax.grid(axis="y", alpha=0.3)
     ax.set_axisbelow(True)
 
@@ -202,7 +221,8 @@ def main():
     parser.add_argument("--embeddings_safe",
                         help="NPZ file with SAFE sample CLIP embeddings")
     parser.add_argument("--annotations",
-                        help="manual_annotations.csv")
+                        help="data/category_counts.csv (aggregate, default) "
+                             "or data/manual_annotations.csv (per-image)")
     parser.add_argument("--output_dir", default="figures")
     parser.add_argument("--dimensions", default="321,178,166",
                         help="Comma-separated CLIP dimensions for Figs 2-4")
