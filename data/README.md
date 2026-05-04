@@ -9,12 +9,7 @@ This directory contains the manual annotation data accompanying the paper.
 Per-image manual observation labels for the ~316 NSFW-flagged hand sketch
 images analyzed in §3.3 and §4.1 of the paper.
 
-> **Note for the maintainer:** The committed version of this file is a
-> **template containing example rows only**, illustrating the schema. Replace
-> the rows with your actual per-image annotations before public release. The
-> aggregate counts in `category_counts.csv` (which match the totals reported
-> in the paper and Figure 1) can stand alone if per-image labels are not
-> released.
+>Note: This file documents the annotation schema with a small set of example rows, illustrating how per-image labels would be structured. The aggregate distribution used in the paper (and in Figure 1) is provided in category_counts.csv. Per-image labels for the full ~316-image subset are retained by the author and may be released in future work pending appropriate ethical review (see paper §8).
 
 **Schema:**
 
