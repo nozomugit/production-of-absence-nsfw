@@ -1,3 +1,6 @@
+# Minimum versions for reconstructing the documented workflow. The historical
+# 2022-era run was not captured with a fully pinned environment, so these are
+# not an exact lockfile and numerical reproduction is not guaranteed.
 torch>=2.0.0
 diffusers>=0.21.0
 transformers>=4.30.0

@@ -1,9 +1,10 @@
-Manual Annotations Data License
-================================
+Annotation Data License
+=======================
 
-The manual annotation data contained in this repository's `data/` directory
-(specifically `manual_annotations.csv` and `category_counts.csv`) is licensed
-under the Creative Commons Attribution 4.0 International License (CC-BY 4.0).
+The annotation material contained in this repository's `data/` directory
+(specifically `manual_annotations_example.csv` and `category_counts.csv`) is
+licensed under the Creative Commons Attribution 4.0 International License
+(CC-BY 4.0).
 
 You are free to:
 
@@ -20,18 +21,19 @@ Under the following terms:
 
 Suggested attribution:
 
-    Manual annotations from Kubota, Nozomu. 2026. "Production of Absence:
-    Reading Stable Diffusion's NSFW Filter through Code and Typology."
-    Expanded Conference 2026. Licensed under CC-BY 4.0.
+    Annotation schema examples and aggregate manual-observation counts from
+    Kubota, Nozomu. 2026. "Production of Absence: Reading Stable Diffusion's
+    NSFW Filter through Code and Typology."
+    Expanded 2026: Conference on Animation and Interactive Art.
+    https://doi.org/10.1145/3840416.3840454. Licensed under CC-BY 4.0.
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
 
 ---
 
-Note: The generated images themselves (which are not redistributed in this
-repository) are subject to the CreativeML OpenRAIL-M license inherited from
-the underlying Stable Diffusion model:
-https://huggingface.co/spaces/CompVis/stable-diffusion-license
+Note: The generated image corpus is not redistributed in this repository.
+This data license applies only to the annotation files named above and makes
+no representation about rights in model outputs or third-party materials.
 
-The source code in this repository (everything in `src/` and `notebooks/`)
+The source code in this repository (everything in `src/`)
 is licensed separately under the MIT License — see the `LICENSE` file.

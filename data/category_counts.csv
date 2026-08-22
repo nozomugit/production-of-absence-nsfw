@@ -1,9 +1,8 @@
 category,count,percentage
-Sexual,1,0.3
-Violent,0,0.0
-Polydactyly,113,35.9
-Five-fingered,87,27.6
-Oligodactyly,94,29.8
-Atypical Arrangement,12,3.8
-Misclassified,0,0.0
-Other,9,2.9
+Polydactyly-like,113,35.8
+Oligodactyly-like,94,29.7
+Five-fingered with anatomical irregularities,87,27.5
+Atypical finger arrangement,12,3.8
+Other generation artifacts,9,2.8
+Sexual content,1,0.3
+Violent content,0,0.0

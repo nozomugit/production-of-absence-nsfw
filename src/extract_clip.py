@@ -2,17 +2,18 @@
 extract_clip.py
 ===============
 
-Extract CLIP (ViT-B/32) embeddings from collected images for the dimension
-analysis in §4.2 (Figures 2-4) and mean vector difference analysis in §4.3
-(Figure 5).
+Extract auxiliary CLIP ViT-B/32 embeddings from collected images for the
+descriptive dimension analysis in §4.2 (Figures 2-4) and mean-vector difference
+analysis in §4.3 (Figure 5). This corresponds to the implementation line:
 
-This corresponds to the line:
+    features = model.get_image_features(**inputs)
 
-    clip_feat = clip_model.encode_image(clip_input)
-
-discussed critically in §5.3 of the paper. The CLIP embedding space itself,
-and the dataset on which it was trained, are revealed to be structurally
-biased through the dimension analysis enabled by these embeddings.
+The auxiliary model here is ``openai/clip-vit-base-patch32`` (ViT-B/32). It is
+not the safety checker's internal CLIP vision encoder, which is ViT-L/14 in
+``CompVis/stable-diffusion-safety-checker``. Consequently, differences observed
+in these auxiliary embeddings are descriptive associations between groups.
+They do not identify the checker's decision features and, by themselves, do not
+establish a causal mechanism or prove training-data or model bias.
 
 Usage
 -----
@@ -36,7 +37,7 @@ CLIP_MODEL_ID = "openai/clip-vit-base-patch32"
 
 
 def load_clip(device: str):
-    """Load CLIP ViT-B/32 model and image processor."""
+    """Load the auxiliary CLIP ViT-B/32 model and its image processor."""
     model = CLIPModel.from_pretrained(CLIP_MODEL_ID).to(device)
     model.eval()
     processor = CLIPImageProcessor.from_pretrained(CLIP_MODEL_ID)
@@ -50,21 +51,31 @@ def extract_embeddings(
     device: str,
     batch_size: int = 32,
 ) -> np.ndarray:
-    """Extract 512-dimensional CLIP image embeddings.
+    """Extract 512-dimensional auxiliary CLIP image embeddings.
 
-    The 512 dimensions are the basis of the §4.2 dimension analysis. Specific
-    dimensions (321, 178, 166) show pronounced separation between NSFW and SAFE
-    classified groups, suggesting structural bias in the embedding space.
+    These dimensions support descriptive comparisons between checker-flagged
+    and checker-unflagged samples. Because this ViT-B/32 model is separate from
+    the checker's internal ViT-L/14 encoder, the embeddings are not a trace of
+    the checker's causal decision process or evidence of bias on their own.
     """
+    if not image_paths:
+        raise ValueError("image_paths must not be empty")
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
+
     embeddings = []
 
     for i in tqdm(range(0, len(image_paths), batch_size), desc="Extracting CLIP"):
         batch_paths = image_paths[i : i + batch_size]
-        images = [Image.open(p).convert("RGB") for p in batch_paths]
+        images = []
+        for path in batch_paths:
+            with Image.open(path) as image:
+                images.append(image.convert("RGB").copy())
         inputs = processor(images=images, return_tensors="pt").to(device)
 
         with torch.no_grad():
-            # The line discussed in §5.3
+            # This is the actual Transformers CLIP image-feature API. These
+            # features come from the auxiliary ViT-B/32, not the checker.
             features = model.get_image_features(**inputs)
 
         embeddings.append(features.cpu().numpy())
@@ -74,7 +85,10 @@ def extract_embeddings(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Extract CLIP ViT-B/32 embeddings (§4.2, §5.3)."
+        description=(
+            "Extract auxiliary CLIP ViT-B/32 embeddings for descriptive "
+            "group comparisons; this is not the safety checker's encoder."
+        )
     )
     parser.add_argument("--input_dir", required=True,
                         help="Directory containing PNG/JPG images")
@@ -112,6 +126,10 @@ def main():
         output_path,
         embeddings=embeddings,
         filenames=np.array([p.name for p in image_paths]),
+        model_id=np.array(CLIP_MODEL_ID),
+        embedding_role=np.array(
+            "auxiliary descriptive features; separate from checker ViT-L/14"
+        ),
     )
 
     print(f"Saved {embeddings.shape[0]} embeddings of dimension {embeddings.shape[1]}")

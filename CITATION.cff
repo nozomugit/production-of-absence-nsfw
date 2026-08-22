@@ -6,16 +6,29 @@ authors:
     given-names: "Nozomu"
     email: "nozomu.k@cnxt.jp"
     affiliation: "Creator's NEXT"
+    orcid: "https://orcid.org/0009-0003-8378-2449"
 type: software
 license: MIT
 repository-code: "https://github.com/nozomugit/production-of-absence-nsfw"
+version: "1.1.0"
+date-released: "2026-08-23"
 preferred-citation:
-  type: unpublished
+  type: conference-paper
   authors:
     - family-names: "Kubota"
       given-names: "Nozomu"
       email: "nozomu.k@cnxt.jp"
       affiliation: "Creator's NEXT"
+      orcid: "https://orcid.org/0009-0003-8378-2449"
   title: "Production of Absence: Reading Stable Diffusion's NSFW Filter through Code and Typology"
+  collection-title: "Expanded 2026: Conference on Animation and Interactive Art"
+  collection-type: proceedings
+  conference:
+    name: "Expanded 2026: Conference on Animation and Interactive Art"
+    date-start: "2026-09-09"
+    date-end: "2026-09-11"
+    location: "Linz, Austria"
+  doi: "10.1145/3840416.3840454"
+  isbn: "979-8-4007-2865-5"
   year: 2026
-  notes: "Manuscript submitted to Expanded Conference 2026"
+  notes: "Accepted for publication in the proceedings of Expanded 2026: Conference on Animation and Interactive Art; forthcoming."

@@ -2,39 +2,38 @@
 safety_bypass.py
 ================
 
-The methodological core of the study: a dummy NSFW safety checker that bypasses
-Stable Diffusion's pipeline-internal first-stage filter.
+Audit utility that replaces Stable Diffusion's configured safety-checker call.
 
-This single function is the technical implementation of the "forensic access"
-discussed in §5.1 of the paper. By replacing the pipeline's `safety_checker`
-with this dummy, images that would otherwise be removed before reaching the
-user's visual field become observable.
+In an ordinary pipeline, the configured safety checker is called once after
+generation. Replacing it with this pass-through function preserves the generated
+image for inspection. The audit workflow can then apply the original checker
+once outside the pipeline and record its result. That bypass-plus-reapplication
+is an audit observation procedure, not evidence that the ordinary pipeline has
+two checker stages.
 
     pipe.safety_checker = dummy_safety_checker
 
-Read critically (§5.1), this single line retroactively proves the existence of
-the first-stage erasure mechanism that is invisible to ordinary users.
+The returned all-False values mean that this dummy performs no detection. They
+must not be interpreted as content labels or safety certifications. Likewise,
+a later checker flag is a model-specific threshold outcome rather than verified
+ground truth about the image.
 
 Reference: Kubota (2026), §5.1 "The Bypass That Reveals Structure".
 """
 
-from typing import List, Tuple, Any
+from typing import Any, List, Tuple
 
 
 def dummy_safety_checker(
     images: Any,
     clip_input: Any,
 ) -> Tuple[Any, List[bool]]:
-    """Bypass Stable Diffusion's pipeline-internal NSFW safety checker.
+    """Preserve images by replacing the pipeline's checker invocation.
 
-    This function returns the input images unchanged with all-False NSFW flags,
-    effectively disabling the pipeline-internal first-stage filter. Images
-    classified as NSFW by the standalone (second-stage) checker can then be
-    observed externally for analysis.
-
-    The technical operation is trivially simple. The critical significance lies
-    in what this single line reveals about the architecture: that the
-    invisibility of erasure is itself implemented as technical structure.
+    This function returns the input images unchanged and supplies all-False
+    placeholder flags. It does not inspect or classify image content. In the
+    audit workflow, the configured checker is separately re-applied once to the
+    preserved image so that its Boolean threshold outcome can be recorded.
 
     Parameters
     ----------
@@ -48,15 +47,16 @@ def dummy_safety_checker(
     images : array-like
         The input images, unmodified.
     has_nsfw_concepts : list of bool
-        A list of False values, one per image, indicating no NSFW content
-        was detected (because no detection is performed).
+        A list of False placeholders, one per image. No detection is performed,
+        so these values do not indicate that the images are safe or unflagged
+        by an actual checker.
 
     Notes
     -----
     This function is intended for research purposes only. It is used to study
-    how the NSFW filter mechanism operates by making its outputs externally
-    observable. It is NOT a recommendation to disable safety mechanisms in
-    production deployments of Stable Diffusion.
+    a configured checker's behavior by making generated images available for a
+    controlled re-application. It is NOT a recommendation to disable safety
+    mechanisms in production deployments of Stable Diffusion.
 
     See §3.3 (manual observation, ethical considerations) and §7 (discussion
     of methodological labor) for the ethical context of this intervention.
