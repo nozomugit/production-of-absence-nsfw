@@ -202,16 +202,16 @@ python -m src.figures --records output/generation_records.json \
                       --annotations data/category_counts.csv \
                       --output_dir figures
 
-# 6a. Compose the full 4 m × 1 m installation layout
+# 6a. Compose the full 4 m × 1 m installation layout in grayscale
 python -m src.compose_grid --input_dir output/nsfw_images \
                             --output figures/figure8_typology_grid.jpg \
-                            --rows 200 --columns 50 --no_grayscale
+                            --rows 200 --columns 50
 
-# 6b. Compose a 10 × 10 Figure 8-style excerpt. Without the withheld
+# 6b. Compose a grayscale 10 × 10 Figure 8-style excerpt. Without the withheld
 #     historical corpus, this does not recreate the archived excerpt exactly.
 python -m src.compose_grid --input_dir output/nsfw_images \
                             --output figures/figure8_excerpt.jpg \
-                            --grid_size 10 --no_grayscale
+                            --grid_size 10
 ```
 
 ### Hardware Notes

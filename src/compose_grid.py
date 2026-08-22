@@ -6,8 +6,7 @@ Compose the typological grid of checker-flagged images (Figure 8 in the paper,
 The Invisible Hand of AI installation, §6.1).
 
 Arranges collected images into a rectangular or square grid. This utility
-defaults to grayscale; the archived paper excerpt is predominantly grayscale
-and retains a small number of muted-color tiles.
+defaults to grayscale, matching the archived paper excerpt.
 
 Reference: Kubota (2026), §6.1 "The 4 m × 1 m Grid".
 
@@ -16,12 +15,12 @@ Usage
     # Full 4:1 installation layout (200×50 = 10,000 images)
     python -m src.compose_grid --input_dir output/nsfw_images \\
                                 --output figures/figure8_typology_grid.jpg \\
-                                --rows 200 --columns 50 --no_grayscale
+                                --rows 200 --columns 50
 
     # Excerpt for paper figure (10×10 = 100 images)
     python -m src.compose_grid --input_dir output/nsfw_images \\
                                 --output figures/figure8_excerpt.jpg \\
-                                --grid_size 10 --no_grayscale
+                                --grid_size 10
 """
 
 import argparse
